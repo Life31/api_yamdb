@@ -6,9 +6,7 @@ from users.models import MyUser as User
 
 
 class Review(models.Model):
-    MARKS = []
-    for i in range(1, 11):
-        MARKS.append(i)
+    MARKS = [(i, str(i)) for i in range(1, 11)]
     title = models.ForeignKey(
         to=Title,
         on_delete=models.CASCADE,
