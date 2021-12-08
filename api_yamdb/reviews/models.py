@@ -1,14 +1,29 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from enum import Enum
 
 from titles.models import Title
 from users.models import MyUser as User
 
 
 class Review(models.Model):
-    MARKS = []
-    for i in range(1, 11):
-        MARKS.append(i)
+
+    class MARKS(Enum):
+        ONE = (1, '1 балл')
+        TWO = (2, '2 балла')
+        THREE = (3, '3 балла')
+        FOUR = (4, '4 балла')
+        FIVE = (5, '5 баллов')
+        SIX = (6, '6 баллов')
+        SEVEN = (7, '7 баллов')
+        EIGHT = (8, '8 баллов')
+        NINE = (9, '9 баллов')
+        TEN = (10, '10 баллов')
+
+        @classmethod
+        def list(cls):
+            return list(map(lambda c: c.value, cls))
+
     title = models.ForeignKey(
         to=Title,
         on_delete=models.CASCADE,
@@ -24,7 +39,7 @@ class Review(models.Model):
         verbose_name='Автор отзыва')
     score = models.CharField(
         max_length=1,
-        choices=MARKS,
+        choices=MARKS.list(),
         verbose_name='Оценка произведения',
         validators=(
             MaxValueValidator(
@@ -32,7 +47,6 @@ class Review(models.Model):
             MinValueValidator(
                 1, 'Оценка не может быть менее 1.'),
         ),
-        blank=False,
         null=False,
     )
     pub_date = models.DateTimeField(

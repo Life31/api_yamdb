@@ -1,14 +1,7 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 
-from datetime import datetime
-
-
-def max_value_this_year(value):
-    return MaxValueValidator(
-        datetime.now().year,
-        'Нельзя добавить с такой датой.'
-    )
+from .validators import max_value_this_year
 
 
 class Category(models.Model):
@@ -38,7 +31,7 @@ class Genre(models.Model):
 
 
 class Title(models.Model):
-    name = models.CharField('Название', max_length=200)
+    name = models.CharField('Название', max_length=200, db_index=True)
     year = models.PositiveSmallIntegerField(
         'Год издания',
         validators=[

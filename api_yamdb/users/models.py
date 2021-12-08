@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField, EmailField, TextField
 
+import uuid
+
 
 class MyUser(AbstractUser):
     USER = 'user'
@@ -50,6 +52,7 @@ class MyUser(AbstractUser):
         unique=True,
         blank=True,
         null=True,
+        default=uuid.uuid4,
         verbose_name='Проверочный код'
     )
 
